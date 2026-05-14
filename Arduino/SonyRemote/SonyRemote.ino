@@ -11,21 +11,18 @@
  * Library: IRremote >= 3.x  (install via Library Manager)
  *
  * Sony SIRC-15 protocol: 7-bit command + 8-bit address, 40 kHz carrier
- * STR-DH130 device addresses:
- *   0x30 (48)  — confirmed via forum/IRScrutinizer (RM-AAU188)
- *   0xB0 (176) — found via non-OEM remote; verify on hardware
+ * STR-DH130 device address: 0x30 (48) — confirmed via forum/IRScrutinizer (RM-AAU188)
  *
  * NOTE — BD/DVD: only a Sony20 (20-bit) code was found (d=16 subd=40 obc=22).
- * To use it, call IrSender.sendSony(0x28, 0x16, SONY_REPEATS, 20) and confirm
- * the address/command byte mapping against the raw pronto hex before enabling.
+ * To add it, call IrSender.sendSony(addr, cmd, SONY_REPEATS, 20) with the
+ * address/command bytes decoded from the raw pronto hex.
  */
 
 #define IR_SEND_PIN 3
 #include <IRremote.hpp>
 
-// Device addresses
-static const uint8_t SONY_ADDR     = 0x30;  // device 48  — confirmed
-static const uint8_t SONY_ADDR_ALT = 0xB0;  // device 176 — needs hardware verification
+// Device address
+static const uint8_t SONY_ADDR = 0x30;  // device 48 — confirmed
 
 // Commands — device 48
 static const uint8_t CMD_POWER  = 0x15;  // P-Toggle  (fn 21)
@@ -69,7 +66,6 @@ static const uint8_t NUM_BUTTONS = sizeof(buttons) / sizeof(buttons[0]);
 // ---------------------------------------------------------------------------
 
 struct InputSource {
-    uint8_t     addr;
     uint8_t     cmd;
     const char *label;
 };
@@ -78,13 +74,12 @@ struct InputSource {
 // State drifts if the original remote is used — just cycle through to re-sync.
 // Add BD/DVD here once its address/command are confirmed (see Sony20 note above).
 static const InputSource INPUTS[] = {
-    { SONY_ADDR,     0x1A, "FM"        },  // d=48,  fn=26  — confirmed
-    { SONY_ADDR,     0x21, "AM"        },  // d=48,  fn=33  — confirmed
-    { SONY_ADDR,     0x23, "VIDEO"     },  // d=48,  fn=35  — confirmed
-    { SONY_ADDR,     0x25, "MD/TAPE"   },  // d=48,  fn=37  — confirmed
-    { SONY_ADDR,     0x2E, "SA-CD/CD"  },  // d=48,  fn=46  — confirmed
-    { SONY_ADDR,     0x7D, "PORTABLE"  },  // d=48,  fn=125 — confirmed
-    { SONY_ADDR_ALT, 0x03, "SAT/CBL"   },  // d=176, fn=3   — VERIFY on hardware
+    { 0x1A, "FM"       },  // fn=26
+    { 0x21, "AM"       },  // fn=33
+    { 0x23, "VIDEO"    },  // fn=35
+    { 0x25, "MD/TAPE"  },  // fn=37
+    { 0x2E, "SA-CD/CD" },  // fn=46
+    { 0x7D, "PORTABLE" },  // fn=125
 };
 
 static const uint8_t NUM_INPUTS = sizeof(INPUTS) / sizeof(INPUTS[0]);
@@ -161,7 +156,7 @@ void loop() {
         if (inputLastState == LOW && !inputSentOnPress) {
             currentInput = (currentInput + 1) % NUM_INPUTS;
             const InputSource &src = INPUTS[currentInput];
-            sendSonyCmd(src.addr, src.cmd, src.label);
+            sendSonyCmd(SONY_ADDR, src.cmd, src.label);
             inputSentOnPress = true;
         }
     }
