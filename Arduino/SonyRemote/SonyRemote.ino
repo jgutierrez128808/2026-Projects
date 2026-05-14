@@ -21,7 +21,7 @@
 static const uint8_t SONY_ADDR = 0x30;
 
 // Commands (device 48, confirmed against STR-DH130)
-static const uint8_t CMD_POWER  = 0x18;  // P-Toggle (fn 24)
+static const uint8_t CMD_POWER  = 0x2F;  // Discrete P-On (fn 47)
 static const uint8_t CMD_VOL_UP = 0x13;  // Vol+ hold (fn 19)
 static const uint8_t CMD_VOL_DN = 0x14;  // Vol- hold (fn 20)
 static const uint8_t CMD_MUTE   = 0x15;  // Mute toggle (fn 21)
