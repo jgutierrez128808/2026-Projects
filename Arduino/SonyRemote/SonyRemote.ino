@@ -10,20 +10,21 @@
  * Library: IRremote >= 3.x  (install via Library Manager)
  *
  * Sony SIRC-15 protocol: 7-bit command + 8-bit address, 40 kHz carrier
- * STR-DH130 address: 0x0C (Sony AV receiver / surround processor)
+ * STR-DH130 device address: 48 (0x30) — confirmed via forum/IRScrutinizer
+ * Source: remotecentral.com forum, RM-AAU188 reverse-engineered codes
  */
 
 #define IR_SEND_PIN 3
 #include <IRremote.hpp>
 
-// Sony SIRC-12 address for AV receivers / surround processors
-static const uint8_t SONY_ADDR = 0x0C;
+// Sony SIRC-15 device address for STR-DH130 (confirmed: device 48)
+static const uint8_t SONY_ADDR = 0x30;
 
-// Commands
-static const uint8_t CMD_POWER  = 0x15;
-static const uint8_t CMD_VOL_UP = 0x12;
-static const uint8_t CMD_VOL_DN = 0x13;
-static const uint8_t CMD_MUTE   = 0x14;
+// Commands (device 48, confirmed against STR-DH130)
+static const uint8_t CMD_POWER  = 0x18;  // P-Toggle (fn 24)
+static const uint8_t CMD_VOL_UP = 0x13;  // Vol+ hold (fn 19)
+static const uint8_t CMD_VOL_DN = 0x14;  // Vol- hold (fn 20)
+static const uint8_t CMD_MUTE   = 0x15;  // Mute toggle (fn 21)
 
 // Button pins (active LOW via INPUT_PULLUP)
 static const uint8_t BTN_POWER  = 4;
