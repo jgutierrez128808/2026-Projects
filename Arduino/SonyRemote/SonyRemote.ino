@@ -36,26 +36,34 @@ static const unsigned long REPEAT_MS    = 180;  // repeat interval while held
 static const uint8_t SONY_REPEATS = 2;          // IRremote sends 1 + this many repeats
 
 struct Button {
-    uint8_t      pin;
-    uint8_t      cmd;
-    bool         lastState;
+    uint8_t       pin;
+    uint8_t       cmd;
+    const char   *label;
+    bool          lastState;
     unsigned long lastChangeMs;
     unsigned long lastSendMs;
 };
 
 Button buttons[] = {
-    { BTN_POWER,  CMD_POWER,  true, 0, 0 },
-    { BTN_VOL_UP, CMD_VOL_UP, true, 0, 0 },
-    { BTN_VOL_DN, CMD_VOL_DN, true, 0, 0 },
+    { BTN_POWER,  CMD_POWER,  "POWER",      true, 0, 0 },
+    { BTN_VOL_UP, CMD_VOL_UP, "VOLUME UP",  true, 0, 0 },
+    { BTN_VOL_DN, CMD_VOL_DN, "VOLUME DOWN",true, 0, 0 },
 };
 
 static const uint8_t NUM_BUTTONS = sizeof(buttons) / sizeof(buttons[0]);
 
-void sendSonyCmd(uint8_t cmd) {
-    IrSender.sendSony(SONY_ADDR, cmd, SONY_REPEATS);
+void sendSonyCmd(const Button &b) {
+    Serial.print("Button pressed: ");
+    Serial.print(b.label);
+    Serial.print("  (cmd=0x");
+    Serial.print(b.cmd, HEX);
+    Serial.println(")");
+    IrSender.sendSony(SONY_ADDR, b.cmd, SONY_REPEATS);
 }
 
 void setup() {
+    Serial.begin(9600);
+    Serial.println("Sony STR-DH130 remote ready.");
     IrSender.begin();
     for (uint8_t i = 0; i < NUM_BUTTONS; i++) {
         pinMode(buttons[i].pin, INPUT_PULLUP);
@@ -82,7 +90,7 @@ void loop() {
 
         if (pressed) {
             if ((now - b.lastSendMs) >= REPEAT_MS) {
-                sendSonyCmd(b.cmd);
+                sendSonyCmd(b);
                 b.lastSendMs = now;
             }
         }
