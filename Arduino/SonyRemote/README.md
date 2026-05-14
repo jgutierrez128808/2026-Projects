@@ -9,11 +9,26 @@ Arduino Nano sketch that emulates a physical remote for the **Sony STR-DH130** s
 | Component | Details |
 |-----------|---------|
 | Microcontroller | Arduino Nano |
-| IR LED | Any 940 nm LED with a ~100 Ω series resistor on pin 3 |
+| IR LED driver | 2N2222 NPN transistor |
 | Power button | Pin 4 → GND |
 | Vol+ button | Pin 5 → GND |
 | Vol− button | Pin 6 → GND |
 | Input button | Pin 7 → GND |
+
+### IR LED Circuit
+
+Pin 3 drives the IR LED through a 2N2222 transistor to supply enough current for reliable transmission:
+
+```
+D3 ──[ 1K ]──► Base
+               Emitter ──► GND
+               Collector ──► IR LED (cathode)
+                             IR LED (anode) ──[ 47Ω ]──► 5V
+```
+
+When D3 goes HIGH the transistor saturates, pulling the LED cathode to GND and completing the circuit through the 47 Ω resistor.
+
+### Buttons
 
 All buttons use the Nano's internal pull-up resistors (INPUT_PULLUP) — no external resistors needed. Each button connects between its pin and GND; the sketch reads it as active LOW.
 
