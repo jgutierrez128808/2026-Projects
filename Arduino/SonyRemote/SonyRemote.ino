@@ -20,11 +20,11 @@
 // Sony SIRC-15 device address for STR-DH130 (confirmed: device 48)
 static const uint8_t SONY_ADDR = 0x30;
 
-// Commands (device 48, confirmed against STR-DH130)
-static const uint8_t CMD_POWER  = 0x2F;  // Discrete P-On (fn 47)
-static const uint8_t CMD_VOL_UP = 0x13;  // Vol+ hold (fn 19)
-static const uint8_t CMD_VOL_DN = 0x14;  // Vol- hold (fn 20)
-static const uint8_t CMD_MUTE   = 0x15;  // Mute toggle (fn 21)
+// Commands — confirmed working against STR-DH130
+static const uint8_t CMD_POWER  = 0x2E;  // Discrete P-On/Off
+static const uint8_t CMD_VOL_UP = 0x12;  // Volume up
+static const uint8_t CMD_VOL_DN = 0x13;  // Volume down
+static const uint8_t CMD_MUTE   = 0x14;  // Mute toggle
 
 // Button pins (active LOW via INPUT_PULLUP)
 static const uint8_t BTN_POWER  = 4;
