@@ -9,8 +9,8 @@
  *
  * Library: IRremote >= 3.x  (install via Library Manager)
  *
- * Sony SIRC-12 protocol: 7-bit command + 5-bit address, 40 kHz carrier
- * STR-DH130 address: 0x01 (Sony audio amplifier device class)
+ * Sony SIRC-15 protocol: 7-bit command + 8-bit address, 40 kHz carrier
+ * STR-DH130 address: 0x0C (Sony AV receiver / surround processor)
  */
 
 #define IR_SEND_PIN 3
@@ -58,7 +58,7 @@ void sendSonyCmd(const Button &b) {
     Serial.print("  (cmd=0x");
     Serial.print(b.cmd, HEX);
     Serial.println(")");
-    IrSender.sendSony(SONY_ADDR, b.cmd, SONY_REPEATS);
+    IrSender.sendSony(SONY_ADDR, b.cmd, SONY_REPEATS, 15);
 }
 
 void setup() {
