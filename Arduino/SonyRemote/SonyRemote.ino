@@ -74,12 +74,10 @@ struct InputSource {
 // State drifts if the original remote is used — just cycle through to re-sync.
 // Add BD/DVD here once its address/command are confirmed (see Sony20 note above).
 static const InputSource INPUTS[] = {
-    { 0x1A, "FM"       },  // fn=26
-    { 0x21, "AM"       },  // fn=33
     { 0x23, "VIDEO"    },  // fn=35
     { 0x25, "MD/TAPE"  },  // fn=37
     { 0x2E, "SA-CD/CD" },  // fn=46
-    { 0x7D, "PORTABLE" },  // fn=125
+    { 0x7C, "BD/DVD"   },  // fn=124 — unconfirmed; try 0x7C or 0x7D
 };
 
 static const uint8_t NUM_INPUTS = sizeof(INPUTS) / sizeof(INPUTS[0]);
