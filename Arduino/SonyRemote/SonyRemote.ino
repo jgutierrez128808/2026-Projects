@@ -16,8 +16,8 @@
 #define IR_SEND_PIN 3
 #include <IRremote.hpp>
 
-// Sony SIRC-12 address for audio amplifiers
-static const uint8_t SONY_ADDR = 0x01;
+// Sony SIRC-12 address for AV receivers / surround processors
+static const uint8_t SONY_ADDR = 0x0C;
 
 // Commands
 static const uint8_t CMD_POWER  = 0x15;
