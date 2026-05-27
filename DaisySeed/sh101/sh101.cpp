@@ -73,7 +73,7 @@ void AudioCallback(AudioHandle::InputBuffer  in,
         // Cutoff CV (block-rate update is plenty for a filter sweep).
         float kt = params.keyTrack * ((voice.Note() - 60.0f) / 60.0f);
         cutoff   = params.cutoff + params.envAmount * env
-                 + params.vcfLfoDepth * (lfo * 0.5f + 0.5f) + kt;
+                 + params.vcfLfoDepth * lfo + kt;
     }
 
     cutoff_cv = To12Bit(cutoff);
